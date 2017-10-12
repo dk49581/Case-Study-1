@@ -1,0 +1,81 @@
+---
+---
+title: "Unit05"
+author: "Josie McDaniel"
+date: "October 9, 2017"
+output: 
+  html_document:
+    keep_md: True
+---
+
+# 1a. import a text file include the column name
+
+```{r}
+df <- read.table("C:/Users/dk49581/Desktop/MSDS Homework/Unit05/yob2016.txt", sep=";", col.name=c("Name", "Gender", "2016 Total"))
+```
+
+
+#1b.  display the summary and structure of the text file
+
+```{r}
+summary (df)
+str(df)
+```
+
+#1c. find and display the one misspelled name with three ys
+
+```{r}
+dfSubset <- df[grep("yyy", df$Name), ]
+dfSubset
+```
+
+#1d. removed the misspelled name and create a new file 
+
+```{r}
+y2016 <- subset(df, Name !='Fionayyy')
+head(y2016, n=215)
+```
+
+#2a. Import .txt file y2015
+```{r, echo=TRUE}
+y2015 <- read.table("C:/Users/dk49581/Desktop/MSDS Homework/Unit05/yob2015.txt", sep=",", col.name=c("Name", "Gender", "2015 Total"))
+```
+
+#2b.  display the last ten rows.  The last 10 rows contains all males and there are 5 children in 2015 with those names
+
+```{r, echo=TRUE}
+tail(y2015, n=10)
+```
+
+#2c.  merge y2016 and y2015 by Name column and name it final.  name that are in both 2016 and 2016 without NA value in amount of children
+
+```{r, echo=TRUE}
+final <- merge(y2015, y2016, by = "Name", na.rm = TRUE, all=FALSE)
+```
+
+#3a create a new column called Total which the amount of children in 2015 and 2016 and then a column total
+```{r, echo=TRUE}
+final$Total <- final$X2015.Total+final$X2016.Total
+```
+
+#3b Sort by Total and display top 10 names
+```{r, echo=TRUE}
+newdata <- final[order(final$Total),] 
+tail(newdata, n=10)
+```
+
+#3c display top 10 girl F names
+```{r, echo=TRUE}
+newer <- df[which(newdata$Gender.x == "F"),]
+newer <- newer[order(newer$Gender),] 
+newer <-head(newer, n=10)
+```
+ 
+#3d write out top 10 girl names and their totals to a CSV file..  no other columns
+```{r, echo=TRUE}
+newer <- subset( newer, select = -Gender )
+write.csv(newer, file = "C:/Users/dk49581/Desktop/MSDS Homework/Unit05/MyData.csv")
+```
+
+#4 Push the Rmarkdown and a Codebook to Github repositories
+
