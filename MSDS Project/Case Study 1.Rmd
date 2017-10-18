@@ -1,0 +1,64 @@
+---
+title: "Case Study 1"
+author: "Josie McDaniel"
+date: "October 18, 2017"
+output: 
+  html_document:
+    keep_md: True
+---
+
+# 1a. import a csv file include the column name
+
+```{r, echo=TRUE}
+BeerData <- read.csv(file="C:/Users/dk49581/Desktop/MSDS Homework/NewProject/Beers.csv", header=TRUE, sep=",", col.name=c("Name", "Beer_ID", "ABV", "IBU", "Brewey_id", "Style", "Ounces"))
+
+BrewiesData <- read.csv(file="C:/Users/dk49581/Desktop/MSDS Homework/NewProject/Brewies.csv", header=TRUE, sep=",", col.name=c("Brewey_id", "Name", "City", "State"))
+```
+
+# 1b. display the summary and structure of the file
+
+```{r}
+summary (BeerData)
+summary (BrewiesData)
+str(BeerData)
+str(BrewiesData)
+```
+
+# merge the files
+
+
+```{r,  echo=TRUE}
+final <- merge(BeerData, BrewiesData, by = "Brewey_id", all=FALSE)
+```
+
+
+#  top and bottom 6 of merge file
+
+```{r, echo=TRUE}
+head(final, n=6)
+tail(final, n=6)
+```
+
+# display number of NAs
+
+```{r, echo=TRUE}
+sum(is.na(final))
+```
+
+# sort by city
+
+```{r, echo=TRUE}
+newfinal <- final[order(final$City),] 
+```
+
+# How many breweries are present in each state
+
+library(plyr)
+count {plyr}
+
+```{r, echo=TRUE}
+library(plyr)
+df2 <- count(newfinal, c('Style', 'City')) 
+df2
+```
+ 
